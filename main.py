@@ -4,26 +4,26 @@ import time
 import random
 pygame.font.init()
 
-WIDTH, HEIGHT = 750, 750
+WIDTH, HEIGHT = 900, 900
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Space Shooter Tutorial")
 
 # Load images
-RED_SPACE_SHIP = pygame.image.load(os.path.join("assets", "pixel_ship_red_small.png"))
-GREEN_SPACE_SHIP = pygame.image.load(os.path.join("assets", "pixel_ship_green_small.png"))
-BLUE_SPACE_SHIP = pygame.image.load(os.path.join("assets", "pixel_ship_blue_small.png"))
+BIG_EYE = pygame.image.load(os.path.join("assets", "big-eye.png"))
+PUMPKIN = pygame.image.load(os.path.join("assets", "pumpkin.png"))
+GHOST = pygame.image.load(os.path.join("assets", "fantasmac.png"))
 
 # Player player
-YELLOW_SPACE_SHIP = pygame.image.load(os.path.join("assets", "pixel_ship_yellow.png"))
+VAMPIRE = pygame.image.load(os.path.join("assets", "fantasma.png"))
 
 # Lasers
-RED_LASER = pygame.image.load(os.path.join("assets", "pixel_laser_red.png"))
-GREEN_LASER = pygame.image.load(os.path.join("assets", "pixel_laser_green.png"))
-BLUE_LASER = pygame.image.load(os.path.join("assets", "pixel_laser_blue.png"))
-YELLOW_LASER = pygame.image.load(os.path.join("assets", "pixel_laser_yellow.png"))
+EYE_LASER = pygame.image.load(os.path.join("assets", "pixel_laser_red.png"))
+PUMPKIN_SEEDS = pygame.image.load(os.path.join("assets", "pixel_laser_green.png"))
+GHOST_PLASMA = pygame.image.load(os.path.join("assets", "ghost-shoot.png"))
+VAMPIRE_BLOOD = pygame.image.load(os.path.join("assets", "pixel_laser_yellow.png"))
 
 # Background
-BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background-black.png")), (WIDTH, HEIGHT))
+BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background-halloween.png")), (WIDTH, HEIGHT))
 
 class Laser:
     def __init__(self, x, y, img):
@@ -33,7 +33,7 @@ class Laser:
         self.mask = pygame.mask.from_surface(self.img)
 
     def draw(self, window):
-        window.blit(self.img, (self.x, self.y))
+        window.blit(self.img, (self.x-21, self.y-5))
 
     def move(self, vel):
         self.y += vel
@@ -94,8 +94,8 @@ class Ship:
 class Player(Ship):
     def __init__(self, x, y, health=100):
         super().__init__(x, y, health)
-        self.ship_img = YELLOW_SPACE_SHIP
-        self.laser_img = YELLOW_LASER
+        self.ship_img = VAMPIRE
+        self.laser_img = VAMPIRE_BLOOD
         self.mask = pygame.mask.from_surface(self.ship_img)
         self.max_health = health
 
@@ -123,9 +123,9 @@ class Player(Ship):
 
 class Enemy(Ship):
     COLOR_MAP = {
-                "red": (RED_SPACE_SHIP, RED_LASER),
-                "green": (GREEN_SPACE_SHIP, GREEN_LASER),
-                "blue": (BLUE_SPACE_SHIP, BLUE_LASER)
+                "red": (BIG_EYE, EYE_LASER),
+                "green": (PUMPKIN, PUMPKIN_SEEDS),
+                "blue": (GHOST, GHOST_PLASMA)
                 }
 
     def __init__(self, x, y, color, health=100):
@@ -138,7 +138,7 @@ class Enemy(Ship):
 
     def shoot(self):
         if self.cool_down_counter == 0:
-            laser = Laser(self.x-20, self.y, self.laser_img)
+            laser = Laser(self.x+30, self.y, self.laser_img)
             self.lasers.append(laser)
             self.cool_down_counter = 1
 
@@ -150,7 +150,7 @@ def collide(obj1, obj2):
 
 def main():
     run = True
-    FPS = 60
+    FPS = 120
     level = 0
     lives = 5
     main_font = pygame.font.SysFont("comicsans", 50)
@@ -161,7 +161,7 @@ def main():
     enemy_vel = 1
 
     player_vel = 5
-    laser_vel = 5
+    laser_vel = 8
 
     player = Player(300, 630)
 
