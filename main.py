@@ -14,13 +14,13 @@ PUMPKIN = pygame.image.load(os.path.join("assets", "pumpkin.png"))
 GHOST = pygame.image.load(os.path.join("assets", "fantasmac.png"))
 
 # Player player
-VAMPIRE = pygame.image.load(os.path.join("assets", "fantasma.png"))
+VAMPIRE = pygame.image.load(os.path.join("assets", "vampiree.png"))
 
 # Lasers
-EYE_LASER = pygame.image.load(os.path.join("assets", "pixel_laser_red.png"))
-PUMPKIN_SEEDS = pygame.image.load(os.path.join("assets", "pixel_laser_green.png"))
+EYE_SHOOT = pygame.image.load(os.path.join("assets", "eye_shoot.png"))
+PUMPKIN_SEEDS = pygame.image.load(os.path.join("assets", "pumpkin_seeds.png"))
 GHOST_PLASMA = pygame.image.load(os.path.join("assets", "ghost-shoot.png"))
-VAMPIRE_BLOOD = pygame.image.load(os.path.join("assets", "pixel_laser_yellow.png"))
+VAMPIRE_BLOOD = pygame.image.load(os.path.join("assets", "vampire_blood.png"))
 
 # Background
 BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background-halloween.png")), (WIDTH, HEIGHT))
@@ -33,7 +33,7 @@ class Laser:
         self.mask = pygame.mask.from_surface(self.img)
 
     def draw(self, window):
-        window.blit(self.img, (self.x-21, self.y-5))
+        window.blit(self.img, (self.x-17, self.y-5))
 
     def move(self, vel):
         self.y += vel
@@ -123,7 +123,7 @@ class Player(Ship):
 
 class Enemy(Ship):
     COLOR_MAP = {
-                "red": (BIG_EYE, EYE_LASER),
+                "red": (BIG_EYE, EYE_SHOOT),
                 "green": (PUMPKIN, PUMPKIN_SEEDS),
                 "blue": (GHOST, GHOST_PLASMA)
                 }
