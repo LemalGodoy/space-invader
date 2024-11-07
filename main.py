@@ -3,6 +3,7 @@ import os
 import time
 import random
 pygame.font.init()
+pygame.mixer.init()
 
 WIDTH, HEIGHT = 900, 900
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -21,6 +22,12 @@ EYE_SHOOT = pygame.image.load(os.path.join("assets", "eye_shoot.png"))
 PUMPKIN_SEEDS = pygame.image.load(os.path.join("assets", "pumpkin_seeds.png"))
 GHOST_PLASMA = pygame.image.load(os.path.join("assets", "ghost-shoot.png"))
 VAMPIRE_BLOOD = pygame.image.load(os.path.join("assets", "vampire_blood.png"))
+
+# Sounds Effects
+BOMB_EXPLOSION_SOUND = pygame.mixer.Sound("./assets/sounds/8bit_bomb_explosion.wav")
+PLAYER_DAMAGE_SOUND = pygame.mixer.Sound("./assets/sounds/01._damage_grunt_male.wav")
+HALLOWEEN_THEME_SOUND = pygame.mixer.Sound("./assets/sounds/halloween.wav")
+HALLOWEEN_THEME_SOUND.set_volume(0.03)
 
 # Background
 BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background-halloween.png")), (WIDTH, HEIGHT))
@@ -69,6 +76,7 @@ class Ship:
             if laser.off_screen(HEIGHT):
                 self.lasers.remove(laser)
             elif laser.collision(obj):
+                PLAYER_DAMAGE_SOUND.play()
                 obj.health -= 10
                 self.lasers.remove(laser)
 
@@ -109,6 +117,7 @@ class Player(Ship):
                 for obj in objs:
                     if laser.collision(obj):
                         objs.remove(obj)
+                        BOMB_EXPLOSION_SOUND.play()
                         if laser in self.lasers:
                             self.lasers.remove(laser)
 
@@ -169,6 +178,8 @@ def main():
 
     lost = False
     lost_count = 0
+
+    HALLOWEEN_THEME_SOUND.play()
 
     def redraw_window():
         WIN.blit(BG, (0,0))
